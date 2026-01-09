@@ -1,0 +1,89 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TenantConfigTool.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+        x:Class="TenantConfigTool.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="租户配置生成工具" Width="1000" Height="700"
+        WindowStartupLocation="CenterScreen">
+    <Window.Styles>
+        <Style Selector="TextBlock.header">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="MinWidth" Value="100"/>
+        </Style>
+    </Window.Styles>
+    
+    <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,*" Margin="10">
+        <!-- Input Section -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,10">
+            <TextBlock Text="输入参数" Classes="header"/>
+            
+            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" Margin="5">
+                <TextBlock Text="基础项目路径:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                <TextBox Text="{Binding BaseProjectPath}" Grid.Row="0" Grid.Column="1" Margin="0,0,5,5"/>
+                <Button Content="浏览..." Command="{Binding BrowseBaseProjectPathCommand}" Grid.Row="0" Grid.Column="2" Margin="0,0,0,5"/>
+                
+                <TextBlock Text="目标项目路径:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                <TextBox Text="{Binding TargetProjectPath}" Grid.Row="1" Grid.Column="1" Margin="0,0,5,5"/>
+                <Button Content="浏览..." Command="{Binding BrowseTargetProjectPathCommand}" Grid.Row="1" Grid.Column="2" Margin="0,0,0,5"/>
+                
+                <TextBlock Text="基础租户代码:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                <TextBox Text="{Binding BaseTenantCode}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,5"/>
+                
+                <TextBlock Text="新租户代码:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                <TextBox Text="{Binding NewTenantCode}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,5"/>
+            </Grid>
+            
+            <CheckBox Content="覆盖已存在的文件" IsChecked="{Binding OverwriteExisting}" Margin="5,5,5,10"/>
+            
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Button Content="预览" Command="{Binding PreviewCommand}" IsEnabled="{Binding !IsProcessing}"/>
+                <Button Content="生成" Command="{Binding GenerateCommand}" IsEnabled="{Binding !IsProcessing}"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <!-- File List Section -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">
+            <TextBlock Text="文件列表" Classes="header"/>
+            <ListBox ItemsSource="{Binding FileMappings}" SelectedItem="{Binding SelectedMapping}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+                            <TextBlock Text="{Binding RelativePath}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding TargetPath}" FontSize="11" Foreground="Gray" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        
+        <!-- Log Section -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+            <TextBlock Text="日志" Classes="header"/>
+            <ListBox ItemsSource="{Binding LogMessages}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="2"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                Background="#F0F0F0" Padding="5" Margin="0,10,0,0">
+            <TextBlock>
+                <Run Text="状态: "/>
+                <Run Text="{Binding StatusText}"/>
+            </TextBlock>
+        </Border>
+    </Grid>
+</Window>
