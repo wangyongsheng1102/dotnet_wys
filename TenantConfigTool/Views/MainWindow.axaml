@@ -6,84 +6,222 @@
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
         x:Class="TenantConfigTool.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Title="租户配置生成工具" Width="1000" Height="700"
+        Title="租户配置生成工具"
+        Width="1000" Height="700"
         WindowStartupLocation="CenterScreen">
+
+    <!-- ================= 全局样式 ================= -->
     <Window.Styles>
+
+        <!-- 基础文本 -->
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
         <Style Selector="TextBlock.header">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="0,10,0,5"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
         </Style>
+
+        <!-- 输入框 -->
+        <Style Selector="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <!-- 按钮 -->
         <Style Selector="Button">
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="14,6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Background" Value="#E5E7EB"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
         </Style>
+
+        <!-- 主按钮 -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="#3B82F6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#2563EB"/>
+        </Style>
+
+        <!-- ListBox -->
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+
+        <Style Selector="ListBoxItem">
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+
+        <Style Selector="ListBoxItem:pointerover">
+            <Setter Property="Background" Value="#EEF4FF"/>
+        </Style>
+
+        <Style Selector="ListBoxItem:selected">
+            <Setter Property="Background" Value="#DCE9FF"/>
+        </Style>
+
     </Window.Styles>
-    
-    <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,*" Margin="10">
-        <!-- Input Section -->
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,10">
-            <TextBlock Text="输入参数" Classes="header"/>
-            
-            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" Margin="5">
-                <TextBlock Text="基础项目路径:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
-                <TextBox Text="{Binding BaseProjectPath}" Grid.Row="0" Grid.Column="1" Margin="0,0,5,5"/>
-                <Button Content="浏览..." Command="{Binding BrowseBaseProjectPathCommand}" Grid.Row="0" Grid.Column="2" Margin="0,0,0,5"/>
-                
-                <TextBlock Text="目标项目路径:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
-                <TextBox Text="{Binding TargetProjectPath}" Grid.Row="1" Grid.Column="1" Margin="0,0,5,5"/>
-                <Button Content="浏览..." Command="{Binding BrowseTargetProjectPathCommand}" Grid.Row="1" Grid.Column="2" Margin="0,0,0,5"/>
-                
-                <TextBlock Text="基础租户代码:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
-                <TextBox Text="{Binding BaseTenantCode}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,5"/>
-                
-                <TextBlock Text="新租户代码:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
-                <TextBox Text="{Binding NewTenantCode}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,5"/>
-            </Grid>
-            
-            <CheckBox Content="覆盖已存在的文件" IsChecked="{Binding OverwriteExisting}" Margin="5,5,5,10"/>
-            
-            <StackPanel Orientation="Horizontal" Margin="5">
-                <Button Content="预览" Command="{Binding PreviewCommand}" IsEnabled="{Binding !IsProcessing}"/>
-                <Button Content="生成" Command="{Binding GenerateCommand}" IsEnabled="{Binding !IsProcessing}"/>
+
+    <!-- ================= 布局 ================= -->
+    <Grid Background="#F3F4F6"
+          RowDefinitions="Auto,*,Auto"
+          ColumnDefinitions="*,*"
+          Margin="12">
+
+        <!-- ========= 输入区 ========= -->
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                Background="White"
+                CornerRadius="12"
+                Padding="14"
+                BoxShadow="0 2 8 #22000000">
+
+            <StackPanel>
+
+                <TextBlock Text="输入参数" Classes="header"/>
+
+                <Grid ColumnDefinitions="Auto,*,Auto"
+                      RowDefinitions="Auto,Auto,Auto,Auto"
+                      Margin="0,4,0,6">
+
+                    <TextBlock Text="基础项目路径:" Grid.Row="0" Grid.Column="0"
+                               VerticalAlignment="Center" Margin="0,0,10,6"/>
+                    <TextBox Text="{Binding BaseProjectPath}" Grid.Row="0" Grid.Column="1" Margin="0,0,6,6"/>
+                    <Button Content="浏览..."
+                            Command="{Binding BrowseBaseProjectPathCommand}"
+                            Grid.Row="0" Grid.Column="2" Margin="0,0,0,6"/>
+
+                    <TextBlock Text="目标项目路径:" Grid.Row="1" Grid.Column="0"
+                               VerticalAlignment="Center" Margin="0,0,10,6"/>
+                    <TextBox Text="{Binding TargetProjectPath}" Grid.Row="1" Grid.Column="1" Margin="0,0,6,6"/>
+                    <Button Content="浏览..."
+                            Command="{Binding BrowseTargetProjectPathCommand}"
+                            Grid.Row="1" Grid.Column="2" Margin="0,0,0,6"/>
+
+                    <TextBlock Text="基础租户代码:" Grid.Row="2" Grid.Column="0"
+                               VerticalAlignment="Center" Margin="0,0,10,6"/>
+                    <TextBox Text="{Binding BaseTenantCode}"
+                             Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                             Margin="0,0,0,6"/>
+
+                    <TextBlock Text="新租户代码:" Grid.Row="3" Grid.Column="0"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Text="{Binding NewTenantCode}"
+                             Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
+                </Grid>
+
+                <CheckBox Content="覆盖已存在的文件"
+                          IsChecked="{Binding OverwriteExisting}"
+                          Margin="0,4,0,8"/>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Spacing="8">
+
+                    <Button Content="预览"
+                            Command="{Binding PreviewCommand}"
+                            IsEnabled="{Binding !IsProcessing}"/>
+
+                    <Button Content="生成"
+                            Classes="primary"
+                            Command="{Binding GenerateCommand}"
+                            IsEnabled="{Binding !IsProcessing}"/>
+                </StackPanel>
+
             </StackPanel>
-        </StackPanel>
-        
-        <!-- File List Section -->
-        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">
-            <TextBlock Text="文件列表" Classes="header"/>
-            <ListBox ItemsSource="{Binding FileMappings}" SelectedItem="{Binding SelectedMapping}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="5">
-                            <TextBlock Text="{Binding RelativePath}" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding TargetPath}" FontSize="11" Foreground="Gray" TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-        
-        <!-- Log Section -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
-            <TextBlock Text="日志" Classes="header"/>
-            <ListBox ItemsSource="{Binding LogMessages}" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="2"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-        
-        <!-- Status Bar -->
-        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
-                Background="#F0F0F0" Padding="5" Margin="0,10,0,0">
+        </Border>
+
+        <!-- ========= 文件列表 ========= -->
+        <Border Grid.Row="1" Grid.Column="0"
+                Background="White"
+                CornerRadius="12"
+                Padding="12"
+                Margin="0,10,6,0"
+                BoxShadow="0 2 8 #22000000">
+
+            <StackPanel>
+
+                <TextBlock Text="文件列表" Classes="header"/>
+
+                <ListBox ItemsSource="{Binding FileMappings}"
+                         SelectedItem="{Binding SelectedMapping}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Spacing="2">
+                                <TextBlock Text="{Binding RelativePath}"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="{Binding TargetPath}"
+                                           FontSize="11"
+                                           Foreground="Gray"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+
+            </StackPanel>
+        </Border>
+
+        <!-- ========= 日志 ========= -->
+        <Border Grid.Row="1" Grid.Column="1"
+                Background="White"
+                CornerRadius="12"
+                Padding="12"
+                Margin="6,10,0,0"
+                BoxShadow="0 2 8 #22000000">
+
+            <StackPanel>
+
+                <TextBlock Text="日志" Classes="header"/>
+
+                <ListBox ItemsSource="{Binding LogMessages}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"
+                                       FontFamily="Consolas"
+                                       FontSize="12"
+                                       Foreground="#333"
+                                       TextWrapping="Wrap"
+                                       Margin="2"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+
+            </StackPanel>
+        </Border>
+
+        <!-- ========= 状态栏 ========= -->
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                Background="White"
+                CornerRadius="10"
+                Padding="8,6"
+                Margin="0,10,0,0"
+                BorderBrush="#D1D5DB"
+                BorderThickness="1">
+
             <TextBlock>
-                <Run Text="状态: "/>
+                <Run Text="状态：" FontWeight="Bold"/>
                 <Run Text="{Binding StatusText}"/>
             </TextBlock>
+
         </Border>
+
     </Grid>
+
 </Window>
