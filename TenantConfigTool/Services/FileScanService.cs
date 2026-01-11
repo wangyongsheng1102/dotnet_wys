@@ -1,22 +1,20 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TenantConfigTool.Models;
 
 namespace TenantConfigTool.Services;
 
 public class FileScanService : IFileScanService
 {
-    private static readonly string[] AllowedExtensions = { ".properties", ".yml", ".yaml", ".xml" };
+    private static readonly string[] AllowedExtensions = [".properties", ".yml", ".yaml", ".xml"];
 
     public List<FileMapping> ScanFiles(string baseProjectPath, string baseTenantCode)
     {
         var mappings = new List<FileMapping>();
 
-        if (string.IsNullOrWhiteSpace(baseProjectPath) || !Directory.Exists(baseProjectPath))
-        {
-            return mappings;
-        }
-
-        if (string.IsNullOrWhiteSpace(baseTenantCode))
+        if (string.IsNullOrWhiteSpace(baseProjectPath) || !Directory.Exists(baseProjectPath) || string.IsNullOrWhiteSpace(baseTenantCode))
         {
             return mappings;
         }
@@ -24,27 +22,7 @@ public class FileScanService : IFileScanService
         var searchPattern = $"*-{baseTenantCode}.*";
         var allFiles = Directory.GetFiles(baseProjectPath, searchPattern, SearchOption.AllDirectories);
 
-        foreach (var filePath in allFiles)
-        {
-            var extension = Path.GetExtension(filePath);
-            if (!AllowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-
-            var fileName = Path.GetFileName(filePath);
-            if (!fileName.Contains($"-{baseTenantCode}", StringComparison.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-
-            var relativePath = Path.GetRelativePath(baseProjectPath, filePath);
-            mappings.Add(new FileMapping
-            {
-                SourcePath = filePath,
-                RelativePath = relativePath
-            });
-        }
+        mappings.AddRange(from filePath in allFiles let extension = Path.GetExtension(filePath) where AllowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase) let fileName = Path.GetFileName(filePath) where fileName.Contains($"-{baseTenantCode}", StringComparison.OrdinalIgnoreCase) let relativePath = Path.GetRelativePath(baseProjectPath, filePath) select new FileMapping { SourcePath = filePath, RelativePath = relativePath });
 
         return mappings;
     }
