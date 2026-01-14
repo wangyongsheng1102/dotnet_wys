@@ -19,15 +19,17 @@ public class FileCopyService : IFileCopyService
         FileMapping mapping,
         string targetProjectPath,
         string baseTenantCode,
+        string baseTenantName,
         string newTenantCode,
+        string newTenantName,
         bool overwriteExisting = false)
     {
         try
         {
             // Build target path by replacing tenant code in relative path
             var targetRelativePath = mapping.RelativePath.Replace(
-                $"-{baseTenantCode}",
-                $"-{newTenantCode}",
+                $"{baseTenantCode}{baseTenantName}",
+                $"{newTenantCode}{newTenantName}",
                 StringComparison.OrdinalIgnoreCase);
 
             var targetFilePath = Path.Combine(targetProjectPath, targetRelativePath);

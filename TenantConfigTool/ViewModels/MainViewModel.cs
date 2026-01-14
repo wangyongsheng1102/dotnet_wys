@@ -28,7 +28,13 @@ public partial class MainViewModel : ObservableObject
     private string _baseTenantCode = string.Empty;
 
     [ObservableProperty]
+    private string _baseTenantName = string.Empty;
+
+    [ObservableProperty]
     private string _newTenantCode = string.Empty;
+    
+    [ObservableProperty]
+    private string _newTenantName = string.Empty;
 
     [ObservableProperty]
     private ObservableCollection<FileMapping> _fileMappings = new();
@@ -112,7 +118,7 @@ public partial class MainViewModel : ObservableObject
             OnPropertyChanged(nameof(StatusText));
             AddLog("开始扫描文件...");
 
-            var mappings = _fileScanService.ScanFiles(BaseProjectPath, BaseTenantCode);
+            var mappings = _fileScanService.ScanFiles(BaseProjectPath, BaseTenantCode, BaseTenantName);
 
             FileMappings.Clear();
             foreach (var mapping in mappings)
@@ -169,7 +175,9 @@ public partial class MainViewModel : ObservableObject
                     mapping,
                     TargetProjectPath,
                     BaseTenantCode,
+                    BaseTenantName,
                     NewTenantCode,
+                    NewTenantName,
                     OverwriteExisting);
 
                 if (result.Success)

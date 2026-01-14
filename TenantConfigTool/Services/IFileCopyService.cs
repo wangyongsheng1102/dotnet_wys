@@ -9,6 +9,8 @@ public interface IFileCopyService
         FileMapping mapping,
         string targetProjectPath,
         string baseTenantCode,
+        string baseTenantName,
         string newTenantCode,
+        string newTenantName,
         bool overwriteExisting = false);
 }

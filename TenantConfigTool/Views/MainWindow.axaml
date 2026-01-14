@@ -8,7 +8,8 @@
         x:DataType="vm:MainViewModel"
         Title="租户配置生成工具"
         Width="1000" Height="700"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        FontFamily="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light">
 
     <!-- ================= 全局样式 ================= -->
     <Window.Styles>
@@ -16,13 +17,13 @@
         <!-- 基础文本 -->
         <Style Selector="TextBlock">
             <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"></Setter>
+            <!-- <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"></Setter> -->
         </Style>
 
         <Style Selector="TextBlock.header">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
-            <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Bold.ttf#霞鹜文楷"></Setter>
+            <!-- <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Bold.ttf#霞鹜文楷"></Setter> -->
         </Style>
 
         <!-- 输入框 -->
@@ -33,7 +34,7 @@
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"></Setter>
+            <!-- <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"></Setter> -->
         </Style>
 
         <!-- 按钮 -->
@@ -44,7 +45,7 @@
             <Setter Property="Background" Value="#E5E7EB"/>
             <Setter Property="BorderBrush" Value="#D1D5DB"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"></Setter>
+            <!-- <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"></Setter> -->
         </Style>
 
         <!-- 主按钮 -->
@@ -52,7 +53,7 @@
             <Setter Property="Background" Value="#3B82F6"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="#2563EB"/>
-            <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Bold.ttf#霞鹜文楷"></Setter>
+            <!-- <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Bold.ttf#霞鹜文楷"></Setter> -->
         </Style>
 
         <!-- ListBox -->
@@ -62,7 +63,7 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="Padding" Value="4"/>
-            <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"></Setter>
+            <!-- <Setter Property="FontFamily" Value="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"></Setter> -->
         </Style>
 
         <Style Selector="ListBoxItem">
@@ -103,14 +104,16 @@
 
                     <TextBlock Text="基础项目路径:" Grid.Row="0" Grid.Column="0"
                                VerticalAlignment="Center" Margin="0,0,10,6"/>
-                    <TextBox Text="{Binding BaseProjectPath}" Grid.Row="0" Grid.Column="1" Margin="0,0,6,6"/>
+                    <TextBox Text="{Binding BaseProjectPath}" Grid.Row="0" Grid.Column="1" Margin="0,0,6,6"
+                             VerticalContentAlignment="Center"/>
                     <Button Content="浏览..."
                             Command="{Binding BrowseBaseProjectPathCommand}"
                             Grid.Row="0" Grid.Column="2" Margin="0,0,0,6"/>
 
                     <TextBlock Text="目标项目路径:" Grid.Row="1" Grid.Column="0"
                                VerticalAlignment="Center" Margin="0,0,10,6"/>
-                    <TextBox Text="{Binding TargetProjectPath}" Grid.Row="1" Grid.Column="1" Margin="0,0,6,6"/>
+                    <TextBox Text="{Binding TargetProjectPath}" Grid.Row="1" Grid.Column="1" Margin="0,0,6,6"
+                             VerticalContentAlignment="Center"/>
                     <Button Content="浏览..."
                             Command="{Binding BrowseTargetProjectPathCommand}"
                             Grid.Row="1" Grid.Column="2" Margin="0,0,0,6"/>
@@ -118,17 +121,26 @@
                     <TextBlock Text="基础租户代码:" Grid.Row="2" Grid.Column="0"
                                VerticalAlignment="Center" Margin="0,0,10,6"/>
                     <TextBox Text="{Binding BaseTenantCode}"
-                             Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
-                             Margin="0,0,0,6"/>
+                             Grid.Row="2" Grid.Column="1"
+                             Margin="0,0,0,6"
+                             VerticalContentAlignment="Center"/>
+                    <TextBox Text="{Binding BaseTenantName}"
+                             Grid.Row="2" Grid.Column="2"
+                             Margin="10,0,0,6"
+                             VerticalContentAlignment="Center"/>
 
                     <TextBlock Text="新租户代码:" Grid.Row="3" Grid.Column="0"
                                VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBox Text="{Binding NewTenantCode}"
-                             Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
+                             Grid.Row="3" Grid.Column="1"
+                             VerticalContentAlignment="Center"/>
+                    <TextBox Text="{Binding NewTenantName}"
+                             Grid.Row="3" Grid.Column="2"
+                             Margin="10,0,0,6"
+                             VerticalContentAlignment="Center"/>
                 </Grid>
 
                 <CheckBox Content="覆盖已存在的文件"
-                          FontFamily="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"
                           IsChecked="{Binding OverwriteExisting}"
                           Margin="0,4,0,8"/>
 
@@ -198,7 +210,6 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}"
-                                       FontFamily="avares://TenantConfigTool/Assets/LXGWWenKai-Light.ttf#霞鹜文楷 Light"
                                        FontSize="12"
                                        Foreground="#333"
                                        TextWrapping="Wrap"

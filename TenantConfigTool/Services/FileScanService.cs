@@ -10,7 +10,7 @@ public class FileScanService : IFileScanService
 {
     private static readonly string[] AllowedExtensions = [".properties", ".yml", ".yaml", ".xml"];
 
-    public List<FileMapping> ScanFiles(string baseProjectPath, string baseTenantCode)
+    public List<FileMapping> ScanFiles(string baseProjectPath, string baseTenantCode, string baseTenantName)
     {
         var mappings = new List<FileMapping>();
 
@@ -19,7 +19,7 @@ public class FileScanService : IFileScanService
             return mappings;
         }
 
-        var searchPattern = $"*-{baseTenantCode}.*";
+        var searchPattern = $"*{baseTenantCode}{baseTenantName}.*";
         var allFiles = Directory.GetFiles(baseProjectPath, searchPattern, SearchOption.AllDirectories);
 
         mappings.AddRange(from filePath in allFiles let extension = Path.GetExtension(filePath) where AllowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase) let fileName = Path.GetFileName(filePath) where fileName.Contains($"-{baseTenantCode}", StringComparison.OrdinalIgnoreCase) let relativePath = Path.GetRelativePath(baseProjectPath, filePath) select new FileMapping { SourcePath = filePath, RelativePath = relativePath });
